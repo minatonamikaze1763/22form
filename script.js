@@ -122,7 +122,7 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
     
     // ✅ Choose form based on "QU" in Model
     const model = String(row.Model || "").toUpperCase();
-    const isEV = model.includes("QU") || model.includes("ORBITOR");
+    const isEV = model.includes("QU") || model.includes("ORBITER");
     
     const templateUrl = isEV ? "form22_ev.pdf" : "form22_petrol.pdf";
     const templateBytes = await fetch(templateUrl).then(res => res.arrayBuffer());
