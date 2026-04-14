@@ -12,14 +12,36 @@ const fileNameDisplay = document.getElementById("fileName");
 
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
-  if (file) {
-    fileNameDisplay.textContent = `📄 ${file.name}`;
-    fileNameDisplay.classList.add("file-loaded");
-  } else {
+  
+  if (!file || !file.name.toLowerCase().endsWith(".xlsx")) {
     fileNameDisplay.textContent = "";
     fileNameDisplay.classList.remove("file-loaded");
+    return alert("Please select a valid .xlsx file.");
   }
+  
+  const reader = new FileReader();
+  
+  reader.onload = function(e) {
+    const data = new Uint8Array(e.target.result);
+    const workbook = XLSX.read(data, { type: "array" });
+    
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+    
+    // Ignore header + empty rows
+    const rowCount = rows
+      .slice(1)
+      .filter(row =>
+        row && row.some(cell => cell !== undefined && String(cell).trim() !== "")
+      ).length;
+    
+    fileNameDisplay.textContent = `${file.name} (${rowCount} rows)`;
+    fileNameDisplay.classList.add("file-loaded");
+  };
+  
+  reader.readAsArrayBuffer(file);
 });
+
 // dropzone
 const dropZone = document.getElementById("dropZone");
 
@@ -64,93 +86,16 @@ dropZone.addEventListener("drop", (e) => {
   } else {
     fileNameDisplay.textContent = "";
     fileNameDisplay.classList.remove("file-loaded");
-    alert("Please drop a valid .xlsx file.");
+    return alert("Please drop a valid .xlsx file.");
   }
   
 });
 
-// When clicking file name, open file chooser again
 fileNameDisplay.addEventListener("click", () => {
   fileInput.click();
 });
-// ✅ Main generate logic
-/*
-document.getElementById("generateBtn").addEventListener("click", async () => {
-  const fileInput = document.getElementById("excelFile");
-  const vehicleType = document.getElementById("vehicleType").value;
-  const status = document.getElementById("status");
-  
-  if (!fileInput.files.length) {
-    alert("Please upload an Excel file first.");
-    return;
-  }
-  
-  status.textContent = "Reading Excel file...";
-  
-  const file = fileInput.files[0];
-  const data = await file.arrayBuffer();
-  const workbook = XLSX.read(data, { type: "array" });
-  const sheet = workbook.Sheets[workbook.SheetNames[0]];
-  const rows = XLSX.utils.sheet_to_json(sheet);
-  
-  const templateUrl = vehicleType === "ev" ? "form22_ev.pdf" : "form22_petrol.pdf";
-  const templateBytes = await fetch(templateUrl).then(res => res.arrayBuffer());
-  
-  const mergedPdf = await PDFLib.PDFDocument.create();
-  
-  let index = 0;
-  for (const row of rows) {
-    index++;
-    status.textContent = `Processing record ${index} of ${rows.length}...`;
-    
-    const pdf = await PDFLib.PDFDocument.load(templateBytes);
-    const page = pdf.getPage(FIELD_COORDINATES.Model.page - 1); // get correct page
-    const { height } = page.getSize();
-    
-    const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
-    const draw = (text, fieldKey, size = 10, padding = 2, bgColor = PDFLib.rgb(1, 1, 1)) => {
-      const coords = FIELD_COORDINATES[fieldKey];
-      if (!coords) return;
-      
-      const content = String(text || "");
-      const textWidth = font.widthOfTextAtSize(content, size);
-      const textHeight = size; // approx. height of the text line
-      
-      // Draw background rectangle (white box)
-      page.drawRectangle({
-        x: coords.x - padding,
-        y: coords.y - padding,
-        width: textWidth + padding * 2,
-        height: textHeight + padding * 1.5, // add slight vertical padding
-        color: bgColor,
-      });
-      
-      // Draw text on top
-      page.drawText(content, {
-        x: coords.x,
-        y: coords.y,
-        size,
-        font,
-        color: PDFLib.rgb(0, 0, 0),
-      });
-      
-      console.log(`${fieldKey} drawn with background → x:${coords.x}, y:${coords.y}`);
-    };
-    // ✅ Draw using exact coordinates
-    draw(row.Model, "Model");
-    draw(row.Chassis || row.Chasis, "Chassis"); // handle Excel typo
-    draw(row.Engine, "Engine");
-    
-    const [copiedPage] = await mergedPdf.copyPages(pdf, [0]);
-    mergedPdf.addPage(copiedPage);
-  }
-  
-  const mergedBytes = await mergedPdf.save();
-  saveAs(new Blob([mergedBytes], { type: "application/pdf" }), "Merged_Form22.pdf");
-  
-  status.textContent = "✅ PDF Generated Successfully!";
-});
-*/
+
+
 document.getElementById("generateBtn").addEventListener("click", async () => {
   const fileInput = document.getElementById("excelFile");
   const status = document.getElementById("status");
