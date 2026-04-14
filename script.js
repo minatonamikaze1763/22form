@@ -41,9 +41,26 @@ dropZone.addEventListener("drop", (e) => {
   
   const files = e.dataTransfer.files;
   if (files.length > 0 && files[0].name.endsWith(".xlsx")) {
+    const file = files[0];
+    
     fileInput.files = files; // Assign dropped file to input
-    fileNameDisplay.textContent = `${files[0].name}`;
-    fileNameDisplay.classList.add("file-loaded");
+    
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+      
+      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+      const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+      
+      const rowCount = jsonData.length;
+      
+      fileNameDisplay.textContent = `${file.name} (${rowCount} rows)`;
+      fileNameDisplay.classList.add("file-loaded");
+    };
+    
+    reader.readAsArrayBuffer(file);
   } else {
     fileNameDisplay.textContent = "";
     fileNameDisplay.classList.remove("file-loaded");
