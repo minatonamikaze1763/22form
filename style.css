@@ -1,0 +1,188 @@
+/* ===== Theme (Purple Monochrome) ===== */
+:root{
+  --bg:#f5f3ff;
+  --card:#ffffff;
+
+  --primary:#7c3aed;
+  --primary-dark:#5b21b6;
+
+  --text:#1f1b2e;
+  --muted:#6b7280;
+  --border:#e9d5ff;
+
+  --shadow:0 10px 30px rgba(124,58,237,0.15);
+}
+
+/* ===== Base ===== */
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background:
+    radial-gradient(circle at 20% 20%, #ede9fe 0%, transparent 40%),
+    radial-gradient(circle at 80% 10%, #ddd6fe 0%, transparent 35%),
+    var(--bg);
+  color:var(--text);
+}
+
+/* ===== Layout Center ===== */
+.container{
+  max-width:700px;
+  margin:60px auto;
+  background:var(--card);
+  border-radius:22px;
+  padding:45px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--border);
+  animation:fade .5s ease;
+}
+
+/* Smooth fade */
+@keyframes fade{
+  from{opacity:0; transform:translateY(15px)}
+  to{opacity:1; transform:none}
+}
+
+/* ===== Headings ===== */
+h1,h2{
+  text-align:center;
+  margin-top:0;
+  color:#2e1065;
+  letter-spacing:.4px;
+}
+
+h1{
+  font-size:30px;
+}
+
+p{
+  color:var(--muted);
+  line-height:1.7;
+}
+
+/* ===== Inputs ===== */
+label{
+  font-weight:600;
+  margin-top:18px;
+  display:block;
+}
+
+#dropZone{
+  padding: 6rem 0;
+}
+
+/* Select */
+select{
+  width:100%;
+  margin-top:8px;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  font-size:16px;
+  transition:.25s;
+  background:#faf5ff;
+}
+
+select:focus{
+  outline:none;
+  border-color:var(--primary);
+  background:white;
+  box-shadow:0 0 0 3px #7c3aed25;
+}
+
+/* ===== Upload Box ===== */
+.excelFile{
+  margin-top:18px;
+  border:2px dashed #c4b5fd;
+  border-radius:18px;
+  padding:60px 20px;
+  text-align:center;
+  font-weight:600;
+  color:var(--primary);
+  cursor:pointer;
+  transition:.3s;
+  background:#faf5ff;
+}
+
+.excelFile:hover{
+  background:#f3e8ff;
+  border-color:var(--primary);
+  transform:translateY(-3px);
+  box-shadow:0 8px 20px rgba(124,58,237,0.15);
+}
+
+#excelFile{
+  display:none;
+}
+
+/* ===== Button ===== */
+#generateBtn,
+a.download-link{
+  width:100%;
+  margin-top:28px;
+  padding:16px;
+  border:none;
+  border-radius:14px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+
+  color:white;
+  background:linear-gradient(135deg,#7c3aed,#5b21b6);
+  box-shadow:0 8px 22px rgba(124,58,237,0.35);
+
+  transition:.3s;
+}
+
+#generateBtn:hover,
+a.download-link:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 28px rgba(124,58,237,0.45);
+}
+
+/* ===== Status ===== */
+#status{
+  text-align:center;
+  margin-top:18px;
+  font-weight:600;
+  color:#6d28d9;
+}
+
+/* ===== File Name ===== */
+#fileName{
+  text-align:center;
+  margin-top:18px;
+  font-weight:600;
+  color:var(--primary);
+  display:none;
+  word-break:break-word;
+}
+
+#fileName.file-loaded{
+  display:block;
+}
+
+#fileName:hover{
+  text-decoration:underline;
+}
+
+/* ===== Mobile ===== */
+@media(max-width:600px){
+
+  .container{
+    margin:20px 10px;
+    padding:24px;
+    border-radius:18px;
+  }
+
+  h1{
+    font-size:24px;
+  }
+
+  .excelFile{
+    padding:45px 15px;
+  }
+}

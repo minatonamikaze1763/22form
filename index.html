@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Form 22 Builder - Generate and merge Form 22 PDFs from Excel data for Petrol or EV vehicles.">
+  <meta name="author" content="Nandhu">
+  <title>Form 22 - TVS</title>
+  
+  <!-- ✅ CDN Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- Top Section -->
+  <div style="text-align:center; margin-bottom:25px;">
+    <h1>Form 22 Builder for TVS</h1>
+    <p style="margin:8px 0 0; color:var(--muted);">
+      Upload your Excel file and generate bulk Form 22 PDFs instantly
+    </p>
+  </div>
+
+  <!-- Upload Section -->
+  <div style="margin-top:20px;">
+    
+    <label 
+      class="excelFile" 
+      id="dropZone" 
+      for="excelFile"
+    >
+      📂 Click or Drag & Drop Excel File Here
+    </label>
+
+    <input type="file" id="excelFile" accept=".xlsx" />
+
+    <div id="fileName"></div>
+
+    <button id="generateBtn">
+      ⚡ Generate Form22 Bulk PDF
+    </button>
+
+    <div id="status"></div>
+
+  </div>
+
+</div>
+
+
+<!-- Example Section -->
+<div class="container">
+
+  <div style="text-align:center; margin-bottom:15px;">
+    <h2>📊 Example Excel Format</h2>
+    <p>
+      Make sure your file contains correct column headers like
+      <strong>Model</strong>, <strong>Chassis</strong>, and <strong>Engine</strong>.
+    </p>
+  </div>
+
+  <!-- Info Box -->
+  <div style="
+    background:#faf5ff;
+    border:1px solid var(--border);
+    padding:18px;
+    border-radius:12px;
+    margin-top:15px;
+    text-align:center;
+  ">
+    <p style="margin:0;">
+      Download a sample file to avoid formatting errors
+    </p>
+
+    <a href="example.xlsx" class="download-link" style="margin-top:15px; display:inline-block;">
+      ⬇ Download Example.xlsx
+    </a>
+  </div>
+
+</div>
+  <!-- JS -->
+
+
+
+  <script src="script.js"></script>
+</body>
+
+</html>
